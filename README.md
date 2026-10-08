@@ -1,4 +1,9 @@
-# system1-agents
+<h1 align="center" id="system1-agents">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/logos/system1-agents-dark.png">
+    <img src="docs/assets/logos/system1-agents.png" alt="System1-Agents" width="760">
+  </picture>
+</h1>
 
 > [!NOTE]
 > **Give your agents a System 1 decision model. Start from a prebuilt agent or build your own.**
@@ -124,6 +129,9 @@ The gates and the templates: [docs/skills.md](docs/skills.md#build-a-system-1-ag
 - `game2048`, `millionaire`, `blackjack`: games with a score per episode.
 - `injection_guard`: a rail that answers one question at a hook of a running agent and fails closed.
 
+These use cases are [application candidates](CONTRIBUTING.md#application-candidates) for the required
+application + System1-Agents + System1-Omni video in important PRs.
+
 Every agent runs on `jev`, `laya` or `cua`, and on the chat model for the comparison. Flags, run commands and
 extras: [docs/agents.md](docs/agents.md).
 
@@ -139,8 +147,10 @@ interface fits: [docs/architecture.md](docs/architecture.md), [docs/decision-mod
 - [docs/benchmarks.md](docs/benchmarks.md): the six runs above, the Google Flights driver comparison and its 2026-09-23 rerun, a longer game, the guard rail.
 - [docs/skills.md](docs/skills.md): the caller skill, the builder skill, what to delegate.
 - [docs/agents.md](docs/agents.md): every agent with its flags, run command and extra.
+- [Agent use-case recipes](recipes/README.md): setup, run commands, result checks and demos for complete tasks.
 - [docs/architecture.md](docs/architecture.md) and [docs/decision-models.md](docs/decision-models.md): the fronts, the model slot, the model interface, adding a backend.
 - [docs/browser-front.md](docs/browser-front.md): the browser policy, decision by decision.
+- [docs/served-laya.md](docs/served-laya.md): Laya served by system1-omni as a decision model over HTTP, with its [API spec](docs/api/laya-systemone.openapi.yaml).
 - [docs/configuration.md](docs/configuration.md): environment variables, defaults and reader subsystems in one table.
 - [docs/glossary.md](docs/glossary.md): terms the documentation glosses on first mention.
 - [docs/why.md](docs/why.md): the problem, the philosophy, the precedents.

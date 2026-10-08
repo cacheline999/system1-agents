@@ -80,6 +80,7 @@ class ToolDecisionModel(Model):
         self._fallback = fallback
         self._act_name = ACT_TOOL
         self.name = decision_model.name  # lands in every tick's ``source`` and in ``Episode.policy``
+        self.bills_input_tokens = decision_model.bills_input_tokens
 
     async def invoke(self, messages: Any, *, tools: Any = None, **kwargs: Any) -> AssistantMessage:
         act_name = tool_name(tools, ACT_TOOL)
@@ -157,6 +158,8 @@ class ToolDecisionModel(Model):
                 "plan": bool(state.plan),
                 "blocked": sorted(state.blocked),
                 "source": self.name,
+                "model": decision.model,
+                **decision.provenance,
             }
         )
         state.blocked = set()  # a block, the notices and the plan last one turn

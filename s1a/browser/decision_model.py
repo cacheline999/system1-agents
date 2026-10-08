@@ -290,10 +290,12 @@ class BrowserDecisionModel(Model):
             run.ticks.append(record)
             if move.operation == "WAIT":
                 run.consecutive_waits += 1
-                run.history.append({"action": "wait", "kind": "wait", "text": None, "page_changed": None})
+                wait_entry = {"action": "wait", "kind": "wait", "text": None, "page_changed": None}
+                run.history.append(wait_entry)
                 if run.consecutive_waits > MAX_CONSECUTIVE_WAITS:
                     return await self._final(run, "BLOCKED", snapshot, "waited without progress")
                 snapshot, settle_probes, settle_ms, progressed = await self._settle_wait(run, snapshot)
+                wait_entry["page_changed"] = progressed  # the next state shows whether the wait moved the page
                 if not progressed:
                     record["settle_probes"] += settle_probes
                     record["settle_ms"] += settle_ms
@@ -773,9 +775,10 @@ class BrowserDecisionModel(Model):
             "interactions": len([h for h in run.history if h["kind"] != "wait"]),
             "waits": len([h for h in run.history if h["kind"] == "wait"]),
             "median_decision_ms": int(statistics.median(jev)) if jev else 0,
-            # Laya and Cua run in process: their tokens are free and unpriced (s1a/tool/loop.py does the same).
             "jev_input_tokens": (
-                sum(int(t.get("input_tokens") or 0) for t in run.ticks) if self._decision_model.name == "jev" else 0
+                sum(int(t.get("input_tokens") or 0) for t in run.ticks)
+                if self._decision_model.bills_input_tokens
+                else 0
             ),
             "median_probe_ms": int(statistics.median(t["probe_ms"] for t in run.ticks)) if run.ticks else 0,
             "settle_probes": sum(t.get("settle_probes", 0) for t in run.ticks),
